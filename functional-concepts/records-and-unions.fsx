@@ -7,7 +7,8 @@ type Address =
       State: string
       Zip: string }
 
-type ShippingMethod = Ground | OverNight | NoRush
+type RushOrder = OverNight | WithinDays of int
+type ShippingMethod = Standard | Rush of RushOrder | NoRush
 
 type Shipment =
     { Address: Address
@@ -16,9 +17,14 @@ type Shipment =
 
 let getShippingMethodCost method =
     match method with
-    | Ground -> 2.99m
-    | OverNight -> 12.99m
-    | NoRush -> 0.00m
+    | Standard -> 2.99m
+    | Rush order -> 
+      match order with
+      | OverNight -> 12.99m
+      | WithinDays days when 0 <= days && days <= 1 -> 12.99m
+      | WithinDays days when 2 <= days && days <= 5 -> 5.99m
+      | _ -> 3.99m
+    | NoRush -> -1.99m
 
 let address = 
     { Line1 = "120 S Cypress St"; 
@@ -29,7 +35,7 @@ let address =
 
 let shipment = 
     { Address = address; 
-      Method = Ground; 
-      Cost = getShippingMethodCost Ground } //this could be better
+      Method = Standard; 
+      Cost = getShippingMethodCost Standard } //this could be better
 
 printfn "Your shipment information:\n%A" shipment //the print formatting is really nice

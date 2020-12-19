@@ -24,4 +24,9 @@ printfn "Traditional: $%M" (Traditional.getTotal price)
 printfn "Compositional: $%M" (Compositional.getTotal price)
 //...and now with piping!
 printfn "With piping: $%M" (price |> Compositional.getTotal)
-    
+
+//here's a homegrown implementation of the composition operator
+// let (>>) f g x =
+//     g (f x)
+// let test = addTax >> addShipping >> round
+// printfn "comp func: $%M" (test price)

@@ -7,9 +7,9 @@ type Student(name, gpa) =
         | c when 1.7m < c && c <= 2.3m -> "C"
         | d when 1.0m < d && d <= 1.7m -> "D"
         | _ -> "F"
-    member this.Name =
+    member this.Name = 
         name
-    member this.Gpa =
+    member this.Gpa = 
         gpa
     member this.LetterGrade() =
         calculateLetterGrade gpa
