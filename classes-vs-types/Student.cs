@@ -1,7 +1,6 @@
 public class Student {
     public Student(string name, decimal gpa)
     {
-        var thing; //C# is perfectly fine with this, F# is not
         Name = name;
         Gpa = gpa;        
     }
@@ -9,7 +8,10 @@ public class Student {
     public string Name { get; set; }
     public decimal Gpa { get; set; }
     public string LetterGrade => CalculateLetterGrade(Gpa);
-    public void PrintGrade => Console.Log($"{Name} has a {LetterGrade}");
+    public void PrintGrade()
+    { 
+        Console.Log($"{Name} has a {LetterGrade}"); 
+    }
 
     private string CalculateLetterGrade(decimal gpa)
     { //Note that we could achieve something similar to F#'s match using pattern matching 
