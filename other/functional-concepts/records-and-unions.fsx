@@ -58,4 +58,4 @@ let address = Address.create line1Input line2Input cityInput stateInput zipInput
 let method = parseShippingMethod methodInput
 let cost = getShippingMethodCost method
 
-let shippingInfo = { Address = address; Method = method; Cost = cost}
+let shippingInfo = { Address = address; Method = method; Cost = cost }
