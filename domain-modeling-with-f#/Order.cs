@@ -12,7 +12,7 @@ public class Order
 
     public decimal GetTotal()
     {
-        return Tax.ApplyTax(SubTotal + Shipping.Cost);
+        return Math.Round(Tax.ApplyTax(SubTotal) + Shipping.Cost, 2);
     }
 }
 
@@ -27,26 +27,31 @@ public class Customer
     public string LastName { get; set; }
 }
 
-public interface IShippingMethod 
+public class BaseShipping 
 {
-    decimal Cost { get; }
+    public abstract decimal Cost { get; }
+
+    public decimal AddShipping(decimal amount)
+    {
+        return Cost + amount;
+    }
 }
 
-public class RegularShipping 
+public class RegularShipping : BaseShipping
 {
-    public decimal Cost => 2.99;
+    public override decimal Cost => 2.99;
 }
 
-public class RushShipping 
+public class RushShipping : BaseShipping
 {
     public decimal NumberOfDays { get; set; }
 
-    public decimal Cost => ((10.0 - NumberOfDays) * 0.99) + 2.99;
+    public override decimal Cost => ((10.0 - NumberOfDays) * 0.99) + 2.99;
 }
 
-public class NoRush
+public class NoRush : BaseShipping
 {
-    public decimal Cost => 0.00;
+    public override decimal Cost => 0.00;
 }
 
 public class Tax 
@@ -58,14 +63,6 @@ public class Tax
 
     public decimal ApplyTax(decimal amount)
     {
-        return Math.Round(TotalRate * amount, 2);
+        return TotalRate * amount;
     }
-}
-
-public enum ShippingType 
-{
-    OverNight,
-    TwoDay,
-    Regular,
-    NoRush
 }
