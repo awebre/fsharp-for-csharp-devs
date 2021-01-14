@@ -6,7 +6,7 @@ public class Order
 
     public decimal SubTotal { get; set; }
 
-    public IShippingMethod Shipping { get; set; }
+    public BaseShipping Shipping { get; set; }
 
     public Tax Tax { get; set; }
 
@@ -25,6 +25,10 @@ public class Customer
     public string MiddleName { get; set; }
 
     public string LastName { get; set; }
+
+    public string EmailAddress { get; set; }
+    
+    public bool IsEmailVerified { get; set; }
 }
 
 public class BaseShipping 

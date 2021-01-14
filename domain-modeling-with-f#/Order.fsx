@@ -1,4 +1,30 @@
 open System;
+open System.Text.RegularExpressions
+
+module Contact =
+    type EmailAddress = EmailAddress of string
+    let createEmail email =
+        if Regex.IsMatch(email, @"^\S+@\S+\.\S+$")
+        then Some (EmailAddress email)
+        else None
+    let getValue = fun (EmailAddress email) -> email
+
+    type ContactEmail = 
+        | NoneSpecified
+        | UnverifiedEmail of EmailAddress
+        | VerifiedEmail of EmailAddress
+    let createContactEmail email =
+        match createEmail email with
+        | Some emailAddress -> UnverifiedEmail emailAddress
+        | None -> NoneSpecified
+    let verifyEmail contactEmail =
+        match contactEmail with
+        | NoneSpecified -> contactEmail
+        | UnverifiedEmail email -> 
+            printfn "Verifiying email to %s" (getValue email)
+            VerifiedEmail email
+        | VerifiedEmail email -> contactEmail
+open Contact
 
 module Customers = 
     type CustomerId = CustomerId of int
@@ -7,7 +33,8 @@ module Customers =
         { Id: CustomerId 
           FirstName: string 
           MiddleName: string option 
-          LastName: string }
+          LastName: string
+          ContactEmail: ContactEmail }
 
     //example implementation of the option type
     type MyOption<'T> =
@@ -38,13 +65,16 @@ open Shipping
 
 module Taxes =
     type TaxRate = TaxRate of decimal with
-        static member op_Explicit x =
-            match x with TaxRate r -> decimal r
+            static member op_Explicit x =
+                match x with TaxRate r -> decimal r
     let createTaxRate rate =
+        //Note: this creation function doesn't prevent someone from creating
+        //a tax rate improperly, this can either be done by convention
+        //or it can be enforced by using tricks envolving modules
         match rate with
         | r when r <= 0m || r >= 1m -> None
         | _ -> Some (TaxRate rate)
-    
+
     type Tax = 
         { LocalRate: TaxRate 
           StateRate: TaxRate }
@@ -72,11 +102,13 @@ open Orders
 
 //EXAMPLE USAGE
 let exampleTotal =
+    let contactInfo = createContactEmail "awebre@envoc.com"
     let austin = 
         { Id = CustomerId 98; 
           FirstName = "Austin"; 
           MiddleName = None; 
-          LastName = "Webre" }
+          LastName = "Webre"
+          ContactEmail = contactInfo; }
     let rushOrder = Rush (Days 2)
     let localRate = createTaxRate 0.05m
     let stateRate = createTaxRate 0.045m
