@@ -28,18 +28,12 @@ open Contact
 
 module Customers = 
     type CustomerId = CustomerId of int
-
     type Customer = 
         { Id: CustomerId 
           FirstName: string 
           MiddleName: string option 
           LastName: string
           ContactEmail: ContactEmail }
-
-    //example implementation of the option type
-    type MyOption<'T> =
-        | Something of 'T
-        | Nothing
 
     let chargeCustomer (customerId:CustomerId) =
         printfn "Charging customer %A" customerId
@@ -74,6 +68,11 @@ module Taxes =
         match rate with
         | r when r <= 0m || r >= 1m -> None
         | _ -> Some (TaxRate rate)
+    
+    //example implementation of the option type
+    type MyOption<'T> =
+        | Something of 'T
+        | Nothing
 
     type Tax = 
         { LocalRate: TaxRate 

@@ -16,21 +16,6 @@ public class Order
     }
 }
 
-public class Customer 
-{
-    public int Id { get; set; }
-
-    public string FirstName { get; set; }
-
-    public string MiddleName { get; set; }
-
-    public string LastName { get; set; }
-
-    public string EmailAddress { get; set; }
-    
-    public bool IsEmailVerified { get; set; }
-}
-
 public class BaseShipping 
 {
     public abstract decimal Cost { get; }
@@ -69,4 +54,19 @@ public class Tax
     {
         return TotalRate * amount;
     }
+}
+
+public class Customer 
+{
+    public int Id { get; set; }
+
+    public string FirstName { get; set; }
+
+    public string MiddleName { get; set; }
+
+    public string LastName { get; set; }
+
+    public string EmailAddress { get; set; }
+    
+    public bool IsEmailVerified { get; set; }
 }
