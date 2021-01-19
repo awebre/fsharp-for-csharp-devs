@@ -27,3 +27,6 @@ let mpg = miles / gallons
 let lPer100Km = mpg |> toLitersPer100Km
 let kilometers = miles |> toKm
 let liters = kilometers |> toLiters lPer100Km
+
+
+
